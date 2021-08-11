@@ -9,13 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79be0267ddaccfc4f9ca5777500888bd, type: 3}
-  m_Name: FireSword
+  m_Script: {fileID: 11500000, guid: 01a4d69045148cc47869e0e6ac70f134, type: 3}
+  m_Name: Fire Sword Skill
   m_EditorClassIdentifier: 
   skillName: FireSword
-  description: make sword fire
-  dmgBase: 10
-  dmgMultiplier: 2
-  accuracy: 0
-  manaCost: 20
+  damage: 0
   cooldown: 5
+  manaCost: 20
+  dmgMultiplier: 3.5

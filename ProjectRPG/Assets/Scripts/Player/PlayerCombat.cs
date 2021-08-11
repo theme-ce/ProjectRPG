@@ -6,9 +6,6 @@ using TMPro;
 
 public class PlayerCombat : PlayerMovement
 {
-    public GameObject currentEnemy;
-
-    public float attackRange = 1.5f;
 
     [Header ("HP and Mana referrences: ")]
     public Slider hpBar;
@@ -16,16 +13,25 @@ public class PlayerCombat : PlayerMovement
     public Slider manaBar;
     public Text manaText;
 
+    [Header ("Combar & Skill: ")]
+    public float attackRange = 1.5f;
     public bool canAttack = true;
 
-    public GameObject damageText;
+    [Space]
+    public bool canFireSword = true;
+    public FireSwordSkill fireSwordSkill;
 
-    public List<LearnableSkill> learnableSkills;
 
     protected override void Update()
     {
         base.Update();
 
+        CombatAction();
+        SetHpAndManaBar();
+    }
+
+    void CombatAction()
+    {
         if (targetedEnemy != null)
         {
             if (Vector2.Distance(this.transform.position, targetedEnemy.transform.position) <= attackRange)
@@ -34,17 +40,19 @@ public class PlayerCombat : PlayerMovement
 
                 currentEnemy = targetedEnemy;
 
-                if(canAttack)
+                if (canAttack)
                 {
                     animator.SetFloat("AttackSpeed", attackSpeed());
                     animator.SetBool("Attacking", true);
-                    
-                    if(Input.GetKeyDown(KeyCode.Q))
+
+                    if (Input.GetKeyDown(KeyCode.Q) && canFireSword)
                     {
-                        animator.SetTrigger("FireSword");
+                        Debug.Log("Use Fire Sword!");
+                        StartCoroutine(UseFireSword());
+                        
                     }
 
-                    else if(Input.GetKeyDown(KeyCode.W))
+                    else if (Input.GetKeyDown(KeyCode.W))
                     {
 
                     }
@@ -55,8 +63,6 @@ public class PlayerCombat : PlayerMovement
         {
             animator.SetBool("Attacking", false);
         }
-
-        SetHpAndManaBar();
     }
 
     void SetHpAndManaBar()
@@ -80,15 +86,29 @@ public class PlayerCombat : PlayerMovement
         }
     }
 
+    void FireSwordAttack()
+    {
+        float fireSwordDamage = Mathf.Floor(attackDmg() * fireSwordSkill.dmgMultiplier);
+        damageText.transform.GetChild(0).GetComponent<TextMeshPro>().text = fireSwordDamage.ToString();
+
+        Vector3 aboveTarget = new Vector3(currentEnemy.transform.position.x, currentEnemy.transform.position.y + 3, 0);
+        Instantiate(damageText.transform, aboveTarget, Quaternion.identity);
+
+        currentEnemy.GetComponent<Enemy>().TakeDamage(fireSwordDamage);
+    }
+
     public void TakeDamage(float dmg)
     {
         currentHP -= dmg;
     }
 
-    [System.Serializable]
-    public class LearnableSkill
+    IEnumerator UseFireSword()
     {
-        public SkillBase skillBase;
-        public int level;
-}
+        canFireSword = false;
+        animator.SetTrigger("FireSword");
+
+        yield return new WaitForSeconds(fireSwordSkill.cooldown);
+
+        canFireSword = true;
+    }
 }

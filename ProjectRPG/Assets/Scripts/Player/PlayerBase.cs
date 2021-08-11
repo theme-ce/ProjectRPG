@@ -6,6 +6,9 @@ public abstract class PlayerBase : MonoBehaviour
 {
     [Header("References: ")]
     [SerializeField] protected Animator animator;
+    public GameObject targetedEnemy;
+    public GameObject currentEnemy;
+    public GameObject damageText;
 
     [Header("Status Setting: ")]
     public float currentHP;
@@ -22,8 +25,6 @@ public abstract class PlayerBase : MonoBehaviour
     public int currentEXP = 0;
     public int maxEXP;
     public int gold = 0;
-
-    public GameObject targetedEnemy;
 
     protected virtual void Start()
     {

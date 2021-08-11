@@ -6,10 +6,10 @@ public class PlayerMovement : PlayerBase
 {
     [Space]
     [Header("Move Control: ")]
-    [SerializeField] private Vector2 mousePos;
     public float moveSpeed = 1f;
-    private Vector2 moveDir;
     protected bool moving;
+    private Vector2 mousePos;
+    private Vector2 moveDir;
 
     protected virtual void Update()
     {
@@ -24,6 +24,7 @@ public class PlayerMovement : PlayerBase
         {
             mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             moveDir = (mousePos - (Vector2)transform.position).normalized;
+
             if(moveDir.x < 0)
             {
                 transform.localScale = new Vector3(-1f, 1f, 1f);

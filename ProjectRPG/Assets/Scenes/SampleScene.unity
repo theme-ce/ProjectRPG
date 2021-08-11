@@ -1779,6 +1779,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 1465191136}
+  targetedEnemy: {fileID: 0}
+  currentEnemy: {fileID: 0}
+  damageText: {fileID: 6349100290425945321, guid: 9e93fcc5f359c034d97be5b0aee8b47a, type: 3}
   currentHP: 100
   currentMana: 100
   stat_str: 20
@@ -1790,20 +1793,15 @@ MonoBehaviour:
   currentEXP: 0
   maxEXP: 0
   gold: 0
-  targetedEnemy: {fileID: 0}
-  mousePos: {x: 0, y: 0}
   moveSpeed: 4
-  currentEnemy: {fileID: 0}
-  attackRange: 1.5
   hpBar: {fileID: 1131471848}
   hpText: {fileID: 712323439}
   manaBar: {fileID: 1425223182}
   manaText: {fileID: 1146335700}
+  attackRange: 1.5
   canAttack: 1
-  damageText: {fileID: 6349100290425945321, guid: 9e93fcc5f359c034d97be5b0aee8b47a, type: 3}
-  learnableSkills:
-  - skillBase: {fileID: 11400000, guid: 055bb15251627794f9e6c86dac475785, type: 2}
-    level: 2
+  canFireSword: 1
+  fireSwordSkill: {fileID: 11400000, guid: b1ba8d1d30c75e949b1a15842bc0f39f, type: 2}
 --- !u!114 &1465191138
 MonoBehaviour:
   m_ObjectHideFlags: 0

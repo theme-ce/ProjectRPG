@@ -17,15 +17,16 @@ public class InputTarget : MonoBehaviour
         {
             RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, Mathf.Infinity, 64);
 
-
-            if(hit.collider != null)
+            if (hit)
             {
-                player.GetComponent<PlayerCombat>().targetedEnemy = hit.collider.gameObject;
-            }
-
-            else
-            {
-                player.GetComponent<PlayerCombat>().targetedEnemy = null;
+                if (hit.collider.GetComponent<Enemy>() != null)
+                {
+                    player.GetComponent<PlayerBase>().targetedEnemy = hit.collider.gameObject;
+                }
+                else if (hit.collider.GetComponent<Enemy>() == null)
+                {
+                    player.GetComponent<PlayerBase>().targetedEnemy = null;
+                }
             }
         }
     }

@@ -6,9 +6,7 @@ using TMPro;
 
 public class PlayerCombat : PlayerMovement
 {
-    public GameObject targetedEnemy;
     public GameObject currentEnemy;
-    public GameObject hittingEnemy;
 
     public float attackRange = 1.5f;
 
@@ -22,35 +20,43 @@ public class PlayerCombat : PlayerMovement
 
     public GameObject damageText;
 
+    public List<LearnableSkill> learnableSkills;
+
     protected override void Update()
     {
         base.Update();
 
-        if(targetedEnemy != currentEnemy)
+        if (targetedEnemy != null)
         {
-            currentEnemy = targetedEnemy;
+            if (Vector2.Distance(this.transform.position, targetedEnemy.transform.position) <= attackRange)
+            {
+                moving = false;
+
+                currentEnemy = targetedEnemy;
+
+                if(canAttack)
+                {
+                    animator.SetFloat("AttackSpeed", attackSpeed());
+                    animator.SetBool("Attacking", true);
+                    
+                    if(Input.GetKeyDown(KeyCode.Q))
+                    {
+                        animator.SetTrigger("FireSword");
+                    }
+
+                    else if(Input.GetKeyDown(KeyCode.W))
+                    {
+
+                    }
+                }
+            }
         }
         else
         {
-            if (targetedEnemy != null)
-            {
-                if (Vector2.Distance(this.transform.position, targetedEnemy.transform.position) <= attackRange)
-                {
-                    moving = false;
-
-                    if(canAttack)
-                    {
-                        StartCoroutine(BasicAttackInterval(targetedEnemy));
-                    }
-                }
-
-            }
-            else
-            {
-                canAttack = true;
-            }
-            SetHpAndManaBar();
+            animator.SetBool("Attacking", false);
         }
+
+        SetHpAndManaBar();
     }
 
     void SetHpAndManaBar()
@@ -61,28 +67,16 @@ public class PlayerCombat : PlayerMovement
         manaText.text = currentMana.ToString();
     }
 
-    IEnumerator BasicAttackInterval(GameObject targetEnemy)
-    {
-        canAttack = false;
-        hittingEnemy = targetedEnemy;
-        animator.SetTrigger("Attacking");
-
-        yield return new WaitForSeconds(attackSpeed());
-
-        canAttack = true;
-    }
-
     void MeleeAttack()
     {
-        if(targetedEnemy != null)
+        if(currentEnemy != null)
         {
             damageText.transform.GetChild(0).GetComponent<TextMeshPro>().text = attackDmg().ToString();
 
-            Vector3 aboveTarget = new Vector3(hittingEnemy.transform.position.x, hittingEnemy.transform.position.y + 3, 0);
+            Vector3 aboveTarget = new Vector3(currentEnemy.transform.position.x, currentEnemy.transform.position.y + 3, 0);
             Instantiate(damageText.transform, aboveTarget, Quaternion.identity);
 
-            hittingEnemy.GetComponent<Enemy>().TakeDamage(attackDmg());
-            hittingEnemy = null;
+            currentEnemy.GetComponent<Enemy>().TakeDamage(attackDmg());
         }
     }
 
@@ -90,4 +84,11 @@ public class PlayerCombat : PlayerMovement
     {
         currentHP -= dmg;
     }
+
+    [System.Serializable]
+    public class LearnableSkill
+    {
+        public SkillBase skillBase;
+        public int level;
+}
 }

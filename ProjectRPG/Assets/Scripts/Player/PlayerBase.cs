@@ -23,6 +23,8 @@ public abstract class PlayerBase : MonoBehaviour
     public int maxEXP;
     public int gold = 0;
 
+    public GameObject targetedEnemy;
+
     protected virtual void Start()
     {
         currentHP = maxHP();

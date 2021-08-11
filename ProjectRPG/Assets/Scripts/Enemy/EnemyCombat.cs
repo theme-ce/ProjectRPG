@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class EnemyCombat : EnemyBase
 {
@@ -9,6 +10,7 @@ public class EnemyCombat : EnemyBase
     public Slider hpBar;
     public Text hpText;
     public Player player;
+    public GameObject enemyName; 
 
     protected virtual void Update()
     {
@@ -23,14 +25,10 @@ public class EnemyCombat : EnemyBase
 
     void SetHpBar()
     {
-        if(player.GetComponent<PlayerCombat>().targetedEnemy == null)
-        {
-            enemyUI.SetActive(false);
-        }
-
         if(player.GetComponent<PlayerCombat>().targetedEnemy == this.gameObject)
         {
             enemyUI.SetActive(true);
+            enemyName.GetComponent<TextMeshPro>().text = this.name;
             hpBar.value = currentHP / maxHP;
             hpText.text = currentHP.ToString();
         }

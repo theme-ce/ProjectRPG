@@ -8,8 +8,8 @@ public class PlayerMovement : PlayerBase
     [Header("Move Control: ")]
     [SerializeField] private Vector2 mousePos;
     public float moveSpeed = 1f;
-    protected bool moving;
     private Vector2 moveDir;
+    protected bool moving;
 
     protected virtual void Update()
     {
@@ -32,8 +32,9 @@ public class PlayerMovement : PlayerBase
             {
                 transform.localScale = new Vector3(1f, 1f, 1f);
             }
+
             moving = true;
-            animator.SetFloat("speed", 1f);
+            targetedEnemy = null;
         }
     }
 
@@ -41,6 +42,7 @@ public class PlayerMovement : PlayerBase
     {
         if(moving && (Vector2)transform.position != mousePos)
         {
+            animator.SetFloat("speed", 1f);
             transform.position = Vector2.MoveTowards(transform.position, mousePos, moveSpeed * Time.deltaTime);
         }
         else
